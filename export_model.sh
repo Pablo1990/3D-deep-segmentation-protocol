@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define default paths and parameters
-DEFAULT_CHANNELS="0"
+DEFAULT_CHANNELS="0 0"
 DEFAULT_PATH_PRETRAINED_MODEL="/home/pablo/train/models/CP_improved_2500"
-DEFAULT_PATH_README=""
-DEFAULT_LIST_PATH_COVER_IMAGES=""
+DEFAULT_PATH_README="/media/pablo/d7c61090-024c-469a-930c-f5ada47fb049/PabloVicenteMunuera/3D-deep-segmentation-protocol/model/README.md"
+DEFAULT_LIST_PATH_COVER_IMAGES="/media/pablo/d7c61090-024c-469a-930c-f5ada47fb049/PabloVicenteMunuera/3D-deep-segmentation-protocol/model/raw_3d.png /media/pablo/d7c61090-024c-469a-930c-f5ada47fb049/PabloVicenteMunuera/3D-deep-segmentation-protocol/model/manual_3D_segmentation.png"
 DEFAULT_MODEL_ID="wing-disc-3d"
 DEFAULT_MODEL_ICON=""
 DEFAULT_MODEL_VERSION="0.1.0"
@@ -15,6 +15,8 @@ DEFAULT_MODEL_CITE='[{"text": "For more details of the model itself, see the man
 DEFAULT_MODEL_TAGS="cellpose 3d"
 DEFAULT_MODEL_LICENSE="MIT"
 DEFAULT_MODEL_REPO="https://github.com/Pablo1990/3D-deep-segmentation-protocol"
+
+cd /home/pablo/mambaforge/envs/colab_cellpose/lib/python3.10/site-packages/cellpose/
 
 # Run the Python script with default parameters
 python export.py \
