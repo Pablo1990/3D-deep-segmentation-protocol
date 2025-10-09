@@ -39,6 +39,6 @@ process MEASURE {
     
     script:
     """
-    fiji --run measure.groovy "${image}, ${labels}, ${imageID}.csv"
+    /Applications/Fiji/Fiji --run measure.groovy "${image}, ${labels}, ${imageID}.csv"
     """
 }
