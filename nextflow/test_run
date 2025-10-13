@@ -42,3 +42,5 @@ process MEASURE {
     /Applications/Fiji/Fiji --run measure.groovy "${image}, ${labels}, ${imageID}.csv"
     """
 }
+
+//test
