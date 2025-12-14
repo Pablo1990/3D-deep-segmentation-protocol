@@ -1,6 +1,4 @@
-import sys  # From Claude
 import matplotlib
-matplotlib.use('Agg')   # From Claude - sets non-GUI backend
 import matplotlib.pyplot as plt
 from cellpose import io
 import numpy as np
@@ -44,19 +42,7 @@ def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
         plt.show()
 
 # Get images and masks
-# files = io.get_image_files(input_dir, '_cp_masks')
-# images = [io.imread(f) for f in files]
-# masks = [io.imread(f.replace('.tif', '_cp_masks.tif')) for f in files]
-# visualize_3d_sections(images[3], masks[3], num_sections=1)
-
-# Image output - png?
-
-
-if __name__ == "__main__": # what the hell is this
-    image_path = sys.argv[1]
-    mask_path = sys.argv[2]
-    output_prefix = sys.argv[3]
-    
-    image = io.imread(image_path)
-    masks = io.imread(mask_path)
-    visualize_3d_sections(image, masks, output_prefix)
+files = io.get_image_files(input_dir, '_cp_masks')
+images = [io.imread(f) for f in files]
+masks = [io.imread(f.replace('.tif', '_cp_masks.tif')) for f in files]
+visualize_3d_sections(images[3], masks[3], num_sections=1)
