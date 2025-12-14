@@ -1,8 +1,19 @@
+#!/usr/bin/env python
+
+import sys
+
 import matplotlib
+matplotlib.use('Agg')   # Non-interactive backend for Nextflow
 import matplotlib.pyplot as plt
+
 from cellpose import io
 import numpy as np
 from scipy import ndimage
+
+# Accepts values from VISUALIZE as arguments
+imageID = sys.argv[1]
+image = sys.argv[2]
+masks = sys.argv[3]
 
 def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
     """
@@ -39,7 +50,7 @@ def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
         else:
           plt.imshow(masks[z_slice], cmap='gray')
           plt.title(f"Image - Z Slice: {z_slice}")
-        plt.show()
+        # plt.show()
 
 # Get images and masks
 files = io.get_image_files(input_dir, '_cp_masks')
