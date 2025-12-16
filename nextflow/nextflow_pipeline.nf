@@ -50,3 +50,7 @@ process VISUALIZE {
     python ${projectDir}/bin/visualize.py ${imageID} ${image} ${masks}
     """
 }
+
+process MANUAL_SEGMENTATION {
+    
+}
