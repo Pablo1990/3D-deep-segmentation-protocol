@@ -3,7 +3,7 @@
 import sys
 
 import matplotlib
-matplotlib.use('Agg')   # Non-interactive backend for Nextflow
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from cellpose import io
@@ -12,8 +12,8 @@ from scipy import ndimage
 
 # Accepts values from VISUALIZE as arguments
 imageID = sys.argv[1]
-image = sys.argv[2]
-masks = sys.argv[3]
+image_path = sys.argv[2]
+masks_path = sys.argv[3]
 
 def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
     """
@@ -52,8 +52,18 @@ def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
           plt.title(f"Image - Z Slice: {z_slice}")
         # plt.show()
 
+# Get images and masks - ORIGINAL
+# files = io.get_image_files(input_dir, '_cp_masks')
+# images = [io.imread(f) for f in files]
+# masks = [io.imread(f.replace('.tif', '_cp_masks.tif')) for f in files]
+# visualize_3d_sections(images[3], masks[3], num_sections=1)
+
 # Get images and masks
-files = io.get_image_files(input_dir, '_cp_masks')
-images = [io.imread(f) for f in files]
-masks = [io.imread(f.replace('.tif', '_cp_masks.tif')) for f in files]
-visualize_3d_sections(images[3], masks[3], num_sections=1)
+image = io.imread(image_path)
+masks = io.imread(masks_path)
+visualize_3d_sections(image, masks, segmented=True, num_sections=3)
+
+# Download results
+output_file = f"{imageID}_visualization.png"
+plt.savefig(output_file, dpi=300, bbox_inches='tight')
+plt.close('all')
