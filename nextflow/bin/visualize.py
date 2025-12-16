@@ -1,10 +1,19 @@
-import sys  # From Claude
+#!/usr/bin/env python
+
+import sys
+
 import matplotlib
-matplotlib.use('Agg')   # From Claude - sets non-GUI backend
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
 from cellpose import io
 import numpy as np
 from scipy import ndimage
+
+# Accepts values from VISUALIZE as arguments
+imageID = sys.argv[1]
+image_path = sys.argv[2]
+masks_path = sys.argv[3]
 
 def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
     """
@@ -41,22 +50,20 @@ def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
         else:
           plt.imshow(masks[z_slice], cmap='gray')
           plt.title(f"Image - Z Slice: {z_slice}")
-        plt.show()
+        # plt.show()
 
-# Get images and masks
+# Get images and masks - ORIGINAL
 # files = io.get_image_files(input_dir, '_cp_masks')
 # images = [io.imread(f) for f in files]
 # masks = [io.imread(f.replace('.tif', '_cp_masks.tif')) for f in files]
 # visualize_3d_sections(images[3], masks[3], num_sections=1)
 
-# Image output - png?
+# Get images and masks
+image = io.imread(image_path)
+masks = io.imread(masks_path)
+visualize_3d_sections(image, masks, segmented=True, num_sections=3)
 
-
-if __name__ == "__main__": # what the hell is this
-    image_path = sys.argv[1]
-    mask_path = sys.argv[2]
-    output_prefix = sys.argv[3]
-    
-    image = io.imread(image_path)
-    masks = io.imread(mask_path)
-    visualize_3d_sections(image, masks, output_prefix)
+# Download results
+output_file = f"{imageID}_visualization.png"
+plt.savefig(output_file, dpi=300, bbox_inches='tight')
+plt.close('all')

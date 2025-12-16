@@ -5,14 +5,17 @@ images = Channel.fromPath("${params.input_dir}/*.tif")
     .map { file -> tuple(file.baseName, file) }
 
 workflow {
-    // Segment raw images
+    // Step 1 - Initial segmentation: Cellpose
     labels = SEGMENT( images )
 
     // Visualize segmentation masks
     VISUALIZE( images.join( labels ) )
 
-    // Measure using original images and generated labels
-    // MEASURE( images.join( labels ) )
+    // Step 2 - Automated corrections: TrackMate (???)
+
+    // Step 3 - Manual segmentation: napari
+
+    // Step 4 - Refining segmentation: Cellpose fine-tuning
 }
 
 process SEGMENT {
@@ -36,34 +39,16 @@ process SEGMENT {
 }
 
 process VISUALIZE {
-    publishDir "${params.viz_dir}", mode: 'copy'
+    publishDir "${params.visual_dir}", mode: 'copy'
 
     input:
     tuple val(imageID), path(image), path(masks)
 
     output:
-    path("${imageID}*.png")
+    path("${imageID}*.png") // How does this path() connect to publishDir?
 
     script:
     """
-    python /Users/wei-tunghsu/nextflow-sandbox/bin/visualize.py
-    """
-
-}
-
-
-/*
-process MEASURE {
-    publishDir "${params.output_dir}", mode: 'copy'
-    input:
-    tuple val(imageID), path(image), path(labels)
-    
-    output:
-    path("*csv")
-    
-    script:
-    """
-    /Applications/Fiji/Fiji --run measure.groovy "${image}, ${labels}, ${imageID}.csv"
+    python ${projectDir}/bin/visualize.py ${imageID} ${image} ${masks}
     """
 }
-*/
