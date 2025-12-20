@@ -9,16 +9,18 @@ workflow {
     labels = SEGMENT( images )
 
     // Visualize segmentation masks
-    VISUALIZE( images.join( labels ) )
+    masks = VISUALIZE( images.join( labels ) )
 
     // Step 2 - Automated corrections: TrackMate (???)
-
     // Step 3 - Manual segmentation: napari
+    segmented = MANUAL_SEGMENT( masks )
 
     // Step 4 - Refining segmentation: Cellpose fine-tuning
 }
 
 process SEGMENT {
+    publishDir "${params.output_dir}", mode: 'copy'
+
     input:
     tuple val(imageID), path(image)
     
@@ -51,4 +53,20 @@ process VISUALIZE {
     """
     python ${projectDir}/bin/visualize.py ${imageID} ${image} ${masks}
     """
+}
+
+process MANUAL_SEGMENT {
+    publishDir "${params.output_dir}", mode: 'copy'
+
+    input:
+    tuple val(imageID), path(image), path(masks)
+
+    output:
+    tuple val(imageID), path(image), path("${imageID}_segmented.tif")
+
+    script:
+    """
+    python ${projectDir}/bin/napari.py ${imageID} ${image} ${masks}
+    """
+
 }
