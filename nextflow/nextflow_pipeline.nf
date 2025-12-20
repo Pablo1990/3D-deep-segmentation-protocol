@@ -13,7 +13,7 @@ workflow {
 
     // Step 2 - Automated corrections: TrackMate (???)
     // Step 3 - Manual segmentation: napari
-    segmented = MANUAL_SEGMENT( masks )
+    segmented = MANUAL_SEGMENT( images.join( labels ) )
 
     // Step 4 - Refining segmentation: Cellpose fine-tuning
 }
@@ -28,7 +28,8 @@ process SEGMENT {
     tuple val(imageID), path("*_cp_masks.tif")
     
     script:
-    """    
+    """
+    export KMP_DUPLICATE_LIB_OK=TRUE    
     cellpose --save_tif --Zstack --verbose \
     --image_path ${image} \
     --pretrained_model ${params.cellpose.pretrained_model} \
