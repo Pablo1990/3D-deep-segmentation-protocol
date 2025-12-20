@@ -67,7 +67,6 @@ process MANUAL_SEGMENT {
 
     script:
     """
-    python ${projectDir}/bin/napari.py ${imageID} ${image} ${masks}
+    python ${projectDir}/bin/napari_segment.py ${imageID} ${image} ${masks}
     """
-
 }
