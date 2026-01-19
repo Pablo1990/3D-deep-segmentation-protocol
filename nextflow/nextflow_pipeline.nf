@@ -1,6 +1,6 @@
 // Parameteres declared in 'nextflow.config'
 
-// Channel for raw images 
+// Channel for raw images
 images = Channel.fromPath("${params.input_dir}/*.tif")
     .map { file -> tuple(file.baseName, file) }
 
@@ -12,12 +12,16 @@ workflow {
     masks = VISUALIZE( images.join( labels ) )
 
     // Step 2 - Automated corrections: TrackMate (???)
+
     // Step 3 - Manual segmentation: napari
     segmented = MANUAL_SEGMENT( images.join( labels ) )
 
     // Step 4 - Refining segmentation: Cellpose fine-tuning
+    slices = CONVERT( segmented )
 }
 
+
+// 1. INITIAL SEGMENTATION: CELLPOSE
 process SEGMENT {
     publishDir "${params.output_dir}", mode: 'copy'
 
@@ -56,6 +60,7 @@ process VISUALIZE {
     """
 }
 
+// 3. MANUAL SEGMENTATION
 process MANUAL_SEGMENT {
     publishDir "${params.output_dir}", mode: 'copy'
 
@@ -68,5 +73,23 @@ process MANUAL_SEGMENT {
     script:
     """
     python ${projectDir}/bin/napari_segment.py ${imageID} ${image} ${masks}
+    """
+}
+
+// 4. REFINING THE SEGMENTATION: CELLPOSE FINE-TUNING
+process CONVERT {
+    publishDir "${params.output_dir}/2d_slices", mode: 'copy'
+
+    input:
+    tuple val(imageID), path(image), path(masks)
+
+    output:
+    path("raw_slices/*")
+    path("mask_slices/*")
+
+    script:
+    """
+    python ${projectDir}/bin/convert_slices.py . raw_slices false
+    python ${projectDir}/bin/convert_slices.py . mask_slices true
     """
 }
