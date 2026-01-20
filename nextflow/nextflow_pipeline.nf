@@ -18,6 +18,7 @@ workflow {
 
     // Step 4 - Refining segmentation: Cellpose fine-tuning
     slices = CONVERT( segmented )
+    // images = VISUALIZE_TRAINING( slices )
 }
 
 
@@ -84,8 +85,7 @@ process CONVERT {
     tuple val(imageID), path(image), path(masks)
 
     output:
-    path("raw_slices/*")
-    path("mask_slices/*")
+    tuple path("raw_slices/*"), path("mask_slices/*")
 
     script:
     """
@@ -93,3 +93,21 @@ process CONVERT {
     python ${projectDir}/bin/convert_slices.py . mask_slices true
     """
 }
+
+/*
+process VISUALIZE_TRAINING {
+    publishDir "${params.visual_train_dir}", mode: 'copy'
+
+    input:
+    path("raw_slices/*")
+    path("mask_slices/*")
+
+    output:
+    path("*.png")
+
+    script:
+    """
+    python ${projectDir}/bin/visualize_training.py . .
+    """
+}
+*/
