@@ -6,7 +6,7 @@ Epithelial cells form diverse structures from squamous spherical organoids to de
 
 We provide
 - A [`jupyter notebook`](3D_deep_segmentation_protocol.ipynb) to explore how to obtain an accurate 3D segmentation from your images. It has detailed comments sections entailing: Initial segmentation using Cellpose; Automated tracking using TrackMate; Manual segmentation using napari; and refining the segmentation model in Cellpose.
-- A [`Nextflow worflow`](nextflow/nextflow_pipeline.nf) for you to run seemingly the protocol as many times as you want. It contains the workflow exploiting `Nextflow` functionalities. If you want to learn `Nextflow`, [here](https://medium.com/@w.weitung.hsu/nextflow-for-beginners-part-1-706ff7d20ea3) you can find a beautiful begginer guide.
+- A [`Nextflow workflow`](nextflow/nextflow_pipeline.nf) for you to run seemingly the protocol as many times as you want. It contains the workflow exploiting `Nextflow` functionalities. If you want to learn `Nextflow`, [here](https://medium.com/@w.weitung.hsu/nextflow-for-beginners-part-1-706ff7d20ea3) you can find a beautiful begginer guide.
 
 ## Installation
 
