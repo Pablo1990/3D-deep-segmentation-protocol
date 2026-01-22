@@ -10,7 +10,15 @@ We provide
 
 ## Installation
 
+### [`jupyter notebook`](3D_deep_segmentation_protocol.ipynb)
+
+### [`Nextflow worflow`](nextflow/nextflow_pipeline.nf)
+
 ## Usage
+
+### [`jupyter notebook`](3D_deep_segmentation_protocol.ipynb)
+
+### [`Nextflow worflow`](nextflow/nextflow_pipeline.nf)
 
 ## Issues
 
