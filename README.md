@@ -98,12 +98,11 @@ and software:
 
 ```bibtex
 @software{Vicente-Munuera_3D_Protocol,
-  author       = {Pablo Vicente Munuera and
+  author       = {Pablo Vicente-Munuera and
+                  Hsu, Wilton and
                   Paci, Giulia and
                   Mao, Yanlan},
   title        = {Pablo1990/3D-deep-segmentation-protocol},
-  month        = may,
-  year         = 2025,
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.15469937},
   url          = {https://doi.org/10.5281/zenodo.15469937},
