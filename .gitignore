@@ -166,5 +166,6 @@ cython_debug/
 data/
 
 labelled_data/
-/nextflow/.nextflow
-/nextflow/work
+nextflow/work
+
+nextflow/.*

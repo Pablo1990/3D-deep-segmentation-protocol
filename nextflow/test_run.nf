@@ -1,6 +1,6 @@
 // Data
 params.inputDir = "/Users/wei-tunghsu/labelled_data/raw_test"
-params.outputDir = "/Users/wei-tunghsu/labelled_data/data_results"
+params.outputDir = "/Users/wei-tunghsu/labelled_data/results"
 
 
 // Creating channel for raw images
