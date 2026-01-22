@@ -6,19 +6,69 @@ Epithelial cells form diverse structures from squamous spherical organoids to de
 
 We provide
 - A [`jupyter notebook`](3D_deep_segmentation_protocol.ipynb) to explore how to obtain an accurate 3D segmentation from your images. It has detailed comments sections entailing: Initial segmentation using Cellpose; Automated tracking using TrackMate; Manual segmentation using napari; and refining the segmentation model in Cellpose.
-- A [`Nextflow worflow`](nextflow/nextflow_pipeline.nf) for you to run seemingly the protocol as many times as you want. It contains the workflow exploiting `Nextflow` functionalities.
+- A [`Nextflow worflow`](nextflow/nextflow_pipeline.nf) for you to run seemingly the protocol as many times as you want. It contains the workflow exploiting `Nextflow` functionalities. If you want to learn `Nextflow`, [here](https://medium.com/@w.weitung.hsu/nextflow-for-beginners-part-1-706ff7d20ea3) you can find a beautiful begginer guide.
 
 ## Installation
 
-### [`jupyter notebook`](3D_deep_segmentation_protocol.ipynb)
+Clone or download this repository.
 
-### [`Nextflow worflow`](nextflow/nextflow_pipeline.nf)
+### Nextflow
+
+Install `Nextflow`. You can follow [this tutorial](https://medium.com/@w.weitung.hsu/nextflow-for-beginners-part-1-706ff7d20ea3).
+
+### Jupyter notebook
+
+**Google colab:** Simply follow the steps [here](https://colab.research.google.com/github/Pablo1990/3D-deep-segmentation-protocol/blob/main/3D_deep_segmentation_protocol.ipynb) with your Google account.
+
+**Local version:** Create an environment with python 3.10. We recommend using `venv`:
+
+```sh
+python3 -m venv cellpose_3d
+```
+
+but you can also use `conda`:
+
+```sh
+# Create an environment with python 3.10.15
+conda create --name cellpose_3d python=3.10.15
+```
+
+Then, activate the environment.
+
+```sh
+source cellpose_3d/bin/activate
+```
+
+Install cellpose3 with graphical user interface and jupyter notebook
+
+```sh
+pip install cellpose[all]==3.1.0 matplotlib==3.7.3 plotly scikit-learn gdown notebook
+```
 
 ## Usage
 
-### [`jupyter notebook`](3D_deep_segmentation_protocol.ipynb)
+### Nextflow
 
-### [`Nextflow worflow`](nextflow/nextflow_pipeline.nf)
+You will first need to change the input and output directories in the config file of the pipeline named [nextflow/nextflow.config](nextflow/nextflow.config). You can also change `cellpose` segmentation parameters in the same file.
+
+Then, simply run:
+
+```sh
+nextflow run nextflow/nextflow_pipeline.nf
+```
+
+### (Local) Jupyter notebook
+
+First, activate your environment:
+
+```sh
+source cellpose_3d/bin/activate
+```
+
+Run jupyter notebook
+```sh
+jupyter notebook
+```
 
 ## Issues
 
