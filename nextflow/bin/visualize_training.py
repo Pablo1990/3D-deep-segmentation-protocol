@@ -8,8 +8,8 @@ from cellpose import io
 from natsort import natsorted
 from glob import glob
 
-raw_dir = sys.argv[1]
-mask_dir = sys.argv[2]
+raw_dir = sys.argv[1] if len(sys.argv) > 1 else '.'
+mask_dir = sys.argv[2] if len(sys.argv) > 2 else '.'
 
 train_files = natsorted([f for f in glob('labelled_data_2D/*.tif')
                         if '_masks' not in f])

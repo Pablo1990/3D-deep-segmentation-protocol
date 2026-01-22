@@ -18,7 +18,9 @@ workflow {
 
     // Step 4 - Refining segmentation: Cellpose fine-tuning
     slices = CONVERT( segmented )
-    // images = VISUALIZE_TRAINING( slices )
+    images = VISUALIZE_TRAINING( slices )
+    = SPLIT_TRAINING(  )
+    training_labels = MODEL_TRAINING( slices )
 }
 
 
@@ -99,8 +101,7 @@ process VISUALIZE_TRAINING {
     publishDir "${params.visual_train_dir}", mode: 'copy'
 
     input:
-    path("raw_slices/*")
-    path("mask_slices/*")
+    tuple path("raw_slices/*"), path("mask_slices/*")
 
     output:
     path("*.png")
@@ -111,3 +112,25 @@ process VISUALIZE_TRAINING {
     """
 }
 */
+
+process MODEL_TRAINING {
+    publishDir "${params.output_dir}/training", mode: 'copy'
+
+    input:
+    tuple path(raw_slices), path(mask_slices)
+
+    output:
+    path
+
+    script:
+    """
+    python -m cellpose --verbose --train \
+    --dir ${train_dir} \
+    --pretrained_model ${initial_model} \
+    --chan ${params.train.chan} \
+    --n_epochs ${n_epochs} \
+    --learning_rate ${learning_rate} \
+    --weight_decay ${weight_decay} \
+    --model_name_out ${model_name}
+    """
+}

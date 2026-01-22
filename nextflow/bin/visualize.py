@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
-import sys
+"""
+Code by Giulia Paci and Pablo Vicente-Munuera
+"""
 
+import sys
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -58,7 +61,7 @@ def visualize_3d_sections(image, masks, segmented=True, num_sections=3):
 # masks = [io.imread(f.replace('.tif', '_cp_masks.tif')) for f in files]
 # visualize_3d_sections(images[3], masks[3], num_sections=1)
 
-# Get images and masks
+# Get images and masks - UPDATED
 image = io.imread(image_path)
 masks = io.imread(masks_path)
 visualize_3d_sections(image, masks, segmented=True, num_sections=3)
