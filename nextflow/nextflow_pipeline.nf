@@ -7,7 +7,6 @@ images = Channel.fromPath("${params.input_dir}/*.tif")
 workflow {
     // Step 1 - Initial segmentation: Cellpose
     labels = SEGMENT( images )
-
     // Visualize segmentation masks
     masks = VISUALIZE( images.join( labels ) )
 
@@ -18,9 +17,9 @@ workflow {
 
     // Step 4 - Refining segmentation: Cellpose fine-tuning
     slices = CONVERT( segmented )
-    images = VISUALIZE_TRAINING( slices )
-    = SPLIT_TRAINING(  )
-    training_labels = MODEL_TRAINING( slices )
+    // images = VISUALIZE_TRAINING( slices )
+     = SPLIT_DATA(  )
+    // training_labels = MODEL_TRAINING( slices )
 }
 
 
@@ -55,7 +54,7 @@ process VISUALIZE {
     tuple val(imageID), path(image), path(masks)
 
     output:
-    path("${imageID}*.png") // How does this path() connect to publishDir?
+    path("${imageID}*.png")
 
     script:
     """
@@ -113,6 +112,22 @@ process VISUALIZE_TRAINING {
 }
 */
 
+process SPLIT_DATA {
+    publishDir "${params.output_dir}/training", mode: 'copy'
+
+    input:
+    tuple path(raw_slices), path(mask_slices)
+
+    output:
+    path
+
+    script:
+    """
+    python ${projectDir}/bin/split_training_test.py ${}
+    """
+}
+
+// Set training parameters in nextflow.config, run script to train new model
 process MODEL_TRAINING {
     publishDir "${params.output_dir}/training", mode: 'copy'
 
@@ -124,7 +139,7 @@ process MODEL_TRAINING {
 
     script:
     """
-    python -m cellpose --verbose --train \
+    cellpose --verbose --train \
     --dir ${train_dir} \
     --pretrained_model ${initial_model} \
     --chan ${params.train.chan} \
@@ -134,3 +149,6 @@ process MODEL_TRAINING {
     --model_name_out ${model_name}
     """
 }
+
+
+// add cellprob
