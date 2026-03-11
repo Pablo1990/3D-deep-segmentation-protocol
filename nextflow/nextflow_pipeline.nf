@@ -80,7 +80,7 @@ process CONVERT {
     publishDir "${params.output_dir}/2d_slices", mode: 'copy'
 
     input:
-    tuple val(imageID), path(image), path(masks)
+    tuple val(imageID), path(image), path(np_masks)
 
     output:
     tuple path("raw_slices/*"), path("mask_slices/*")
