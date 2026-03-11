@@ -7,10 +7,7 @@ images = Channel.fromPath("${params.input_dir}/*.tif")
 workflow {
     // Step 1 - Initial segmentation: Cellpose
     labels = SEGMENT( images )
-    // Visualize segmentation masks
     masks = VISUALIZE( images.join( labels ) )
-
-    // Step 2 - Automated corrections: TrackMate (???)
 
     // Step 3 - Manual segmentation: napari
     segmented = MANUAL_SEGMENT( images.join( labels ) )
@@ -18,7 +15,7 @@ workflow {
     // Step 4 - Refining segmentation: Cellpose fine-tuning
     slices = CONVERT( segmented )
     // images = VISUALIZE_TRAINING( slices )
-     = SPLIT_DATA(  )
+    // = SPLIT_DATA(  )
     // training_labels = MODEL_TRAINING( slices )
 }
 
@@ -51,14 +48,14 @@ process VISUALIZE {
     publishDir "${params.visual_dir}", mode: 'copy'
 
     input:
-    tuple val(imageID), path(image), path(masks)
+    tuple val(imageID), path(image), path(cp_masks)
 
     output:
     path("${imageID}*.png")
 
     script:
     """
-    python ${projectDir}/bin/visualize.py ${imageID} ${image} ${masks}
+    python ${projectDir}/bin/visualize.py ${imageID} ${image} ${cp_masks}
     """
 }
 
@@ -67,14 +64,14 @@ process MANUAL_SEGMENT {
     publishDir "${params.output_dir}", mode: 'copy'
 
     input:
-    tuple val(imageID), path(image), path(masks)
+    tuple val(imageID), path(image), path(cp_masks)
 
     output:
     tuple val(imageID), path(image), path("${imageID}_segmented.tif")
 
     script:
     """
-    python ${projectDir}/bin/napari_segment.py ${imageID} ${image} ${masks}
+    python ${projectDir}/bin/napari_segment.py ${imageID} ${image} ${cp_masks}
     """
 }
 
@@ -96,7 +93,7 @@ process CONVERT {
 }
 
 /*
-process VISUALIZE_TRAINING {
+process VISUALIZE_TRAINING {=
     publishDir "${params.visual_train_dir}", mode: 'copy'
 
     input:
@@ -113,7 +110,7 @@ process VISUALIZE_TRAINING {
 */
 
 process SPLIT_DATA {
-    publishDir "${params.output_dir}/training", mode: 'copy'
+    publishDir "${params.output_dir}/trainin?????????????g", mode: 'copy'
 
     input:
     tuple path(raw_slices), path(mask_slices)
