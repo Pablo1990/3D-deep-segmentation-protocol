@@ -7,7 +7,8 @@ images = Channel.fromPath("${params.input_dir}/*.tif")
 workflow {
     // Step 1 - Initial segmentation: Cellpose
     labels = SEGMENT( images )
-    masks = VISUALIZE( images.join( labels ) )
+    VISUALIZE( images.join( labels ) )
+    EVALUATE_SEGMENTATION( labels )  // Biology-based evaluation metrics
 
     // Step 3 - Manual segmentation: napari
     segmented = MANUAL_SEGMENT( images.join( labels ) )
@@ -15,8 +16,8 @@ workflow {
     // Step 4 - Refining segmentation: Cellpose fine-tuning
     slices = CONVERT( segmented )
     // images = VISUALIZE_TRAINING( slices )
-    // = SPLIT_DATA(  )
-    // training_labels = MODEL_TRAINING( slices )
+    split_data = SPLIT_DATA( slices )
+    // training_labels = MODEL_TRAINING( split_data.train )
 }
 
 
@@ -59,6 +60,21 @@ process VISUALIZE {
     """
 }
 
+process EVALUATE_SEGMENTATION {
+    publishDir "${params.output_dir}/qc", mode: 'copy'
+
+    input:
+    tuple val(imageID), path(cp_masks)
+
+    output:
+    path("${imageID}_persistence_score.csv")
+
+    script:
+    """
+    python ${projectDir}/bin/biology_metrics.py ${imageID} ${cp_masks}
+    """
+}
+
 // 3. MANUAL SEGMENTATION
 process MANUAL_SEGMENT {
     publishDir "${params.output_dir}", mode: 'copy'
@@ -93,7 +109,7 @@ process CONVERT {
 }
 
 /*
-process VISUALIZE_TRAINING {=
+process VISUALIZE_TRAINING {
     publishDir "${params.visual_train_dir}", mode: 'copy'
 
     input:
@@ -110,17 +126,18 @@ process VISUALIZE_TRAINING {=
 */
 
 process SPLIT_DATA {
-    publishDir "${params.output_dir}/trainin?????????????g", mode: 'copy'
+    publishDir "${params.training_set_dir}", mode: 'copy'
 
     input:
     tuple path(raw_slices), path(mask_slices)
 
     output:
-    path
+    path("train/*"), emit: train
+    path("test/*"), emit: test
 
     script:
     """
-    python ${projectDir}/bin/split_training_test.py ${}
+    python ${projectDir}/bin/split_training_test.py raw_slices mask_slices
     """
 }
 
