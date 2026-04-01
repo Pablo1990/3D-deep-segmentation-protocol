@@ -1,0 +1,43 @@
+# params.yml — user-specific parameter overrides for the main pipeline
+#              (nextflow_pipeline.nf + nextflow.config).
+#
+# Usage:
+#   nextflow run nextflow_pipeline.nf -params-file params.yml
+#
+# Any value set here overrides the defaults in nextflow.config.
+# Paths can be absolute or relative to the directory you launch Nextflow from.
+#
+# Note: test_run.nf is a standalone script with its own inline params
+#       (inputDir / outputDir) that are set directly inside that file.
+
+# ── Data directories ──────────────────────────────────────────────────────────
+input_dir:        "data/raw"         # Directory containing raw images (input)
+output_dir:       "results"          # Root output directory
+visual_dir:       "results/visualizations"          # Saved visualizations
+visual_train_dir: "results/visualizations_training" # Training visualizations
+training_set_dir: "results/training"                # Split training set root
+train_dir:        "results/training/train"          # Training images
+test_dir:         "results/training/test"           # Test images
+
+# ── Cellpose segmentation parameters ─────────────────────────────────────────
+# cellpose:
+#   pretrained_model: cyto3
+#   chan: 0
+#   diameter: 60
+#   cellprob_threshold: 0
+#   stitch_threshold: 0.05
+#   dP_smooth: 0.0
+#   anisotropy: 1.0
+#   use_gpu: true
+
+# ── Cellpose training parameters ──────────────────────────────────────────────
+# train:
+#   pretrained_model: cyto3
+#   new_model: CP_improved_100
+#   chan: 0
+#   diameter: 60
+#   cellprob_threshold: 0
+#   stitch_threshold: 0.05
+#   dP_smooth: 0.0
+#   anisotropy: 1.0
+#   use_gpu: true

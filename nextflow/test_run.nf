@@ -1,6 +1,9 @@
 // Data
-params.inputDir = "/Users/wei-tunghsu/labelled_data/raw_test"
-params.outputDir = "/Users/wei-tunghsu/labelled_data/results"
+// Override on the command line:  --inputDir /path/to/images  --outputDir /path/to/results
+// Or supply a params file:       -params-file params.yml
+params.inputDir  = "data/raw"
+params.outputDir = "results"
+params.fijiPath  = "fiji"
 
 
 // Creating channel for raw images
@@ -39,7 +42,7 @@ process MEASURE {
     
     script:
     """
-    /Applications/Fiji/Fiji --run measure.groovy "${image}, ${labels}, ${imageID}.csv"
+    ${params.fijiPath} --run measure.groovy "${image}, ${labels}, ${imageID}.csv"
     """
 }
 
