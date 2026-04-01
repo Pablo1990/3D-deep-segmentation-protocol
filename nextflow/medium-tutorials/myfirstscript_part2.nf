@@ -1,6 +1,8 @@
 // Declaring parameters
-params.inputDir = "Hello World"
-params.outputDir = "/Users/wei-tunghsu/Downloads"
+// Override on the command line: --outputDir /path/to/output
+// Or supply a params file:      -params-file params.yml
+params.inputDir  = "Hello World"
+params.outputDir = "downloads"
 params.greetings = "Hello,Hola,Bonjour,Ciao"  // Multiple greetings
 
 
