@@ -61,16 +61,15 @@ process VISUALIZE {
 }
 
 process EVALUATE_SEGMENTATION {
-    publishDir "${params.output_dir}/qc", mode: 'copy'
-
     input:
     tuple val(imageID), path(cp_masks)
 
     output:
-    path("${imageID}_persistence_score.csv")
+    stdout
 
     script:
     """
+    export KMP_DUPLICATE_LIB_OK=TRUE 
     python ${projectDir}/bin/biology_metrics.py ${imageID} ${cp_masks}
     """
 }
@@ -87,7 +86,7 @@ process MANUAL_SEGMENT {
 
     script:
     """
-    python ${projectDir}/bin/napari_segment.py ${imageID} ${image} ${cp_masks}
+    python ${projectDir}/bin/napari_segment_old.py ${imageID} ${image} ${cp_masks}
     """
 }
 
