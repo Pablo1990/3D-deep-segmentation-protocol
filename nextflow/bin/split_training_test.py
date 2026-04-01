@@ -1,7 +1,16 @@
 #!/usr/bin/env python
 
-!rm -rf test/
-!rm -rf train/
+# !rm -rf test/
+# !rm -rf train/
+
+import os
+import sys
+import shutil
+from glob import glob
+from natsort import natsorted
+
+raw_dir = sys.argv[1]
+mask_dir = sys.argv[2]
 
 # Divide sets into training and set test
 from sklearn.model_selection import train_test_split
